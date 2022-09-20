@@ -50,7 +50,7 @@ driver = webdriver.Firefox(service=driverService, options=option)
 driver.get("https://www.instagram.com")
 
 #LOGIN
-sleep(5)
+sleep(10)
 write_input_human(driver,'/html/body/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div[1]/div[1]/div/label/input','jocas.mi')
 write_input_human(driver,'/html/body/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div[1]/div[2]/div/label/input','PlsN0H4ck')
 
@@ -60,12 +60,26 @@ print('sleeping 3')
 sleep(10)
 
 # Validation
-try:
-    click_on(driver,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[1]/div[1]/button/div')
-    validation = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[1]/div[2]/div/div/div[1]/div[1]/a/div/div[2]/div/div/div/div')
-    print(validation.text)
-except:
-    print(driver.execute_script("return document.documentElement.outerHTML"))
+click_on(driver,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[1]/div[1]/button/div')
+validation = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[1]/div[2]/div/div/div[1]/div[1]/a/div/div[2]/div/div/div/div')
+print(validation.text)
+
+# Go to profile
+click_on(driver,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[3]/div/div[6]/div[1]/span')
+sleep(1)
+click_on(driver,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[3]/div/div[6]/div[2]/div/div[2]/div[1]/a')
+print('Loading profile')
+sleep(5) 
+
+#Go to Following
+click_on(driver,'/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/main/div/header/section/ul/li[3]/a')
+                
+                
+print('Loading following')
+sleep(3)
+#print Tika
+tika = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[1]/div[2]/div[1]/div/div/span/a/span/div')
+print(tika.text)
 
 
 driver.quit()
