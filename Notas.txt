@@ -1,0 +1,5 @@
+CheckList, quando tenho erros de not found
+
+1. Ter a certeza que o XPATH que retirei era quando tinha a janela maximizada
+2. Nos clicks, ver se o que retirei tem alguma acao
+

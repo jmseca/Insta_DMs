@@ -7,6 +7,25 @@ from time import sleep
 
 def sleep_between_actions():
     sleep(round(random.uniform(0.5,2),4))
+    
+def log_in(uname,passwd):
+    """Logs In with a specific account
+
+    Args:
+        uname   (str): username
+        passwd  (str): password
+    """
+    write_input_human(driver,'/html/body/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div[1]/div[1]/div/label/input',uname)
+    write_input_human(driver,'/html/body/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div[1]/div[2]/div/label/input',passwd)
+    click_on(driver,'/html/body/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div[1]/div[3]/button/div')
+    
+def search_and_go(uname):
+    """Searches for a specific user and visits his page
+
+    Args:
+        uname (str): username
+    """
+    
 
 def click_on(driver,xpath):
     """Clicks on a button given its xpath
@@ -81,5 +100,13 @@ sleep(3)
 tika = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[1]/div[2]/div[1]/div/div/span/a/span/div')
 print(tika.text)
 
+#driver.execute_script("window.scrollTo(0, 100)")
+#driver.execute_script("window.scrollTo(0, 100)")
 
+
+sline = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[8]/div[2]/div[2]/div')  
+print(sline.text)
 driver.quit()
+
+# To switch to main window, use
+#driver.switch_to.default_content()
