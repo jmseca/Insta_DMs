@@ -5,6 +5,16 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from tags import InstaXpaths
 
+
+def get_firefox_driver(url):
+    option = webdriver.FirefoxOptions()
+    option.add_argument('--headless')
+    option.binary_location = '/usr/lib/firefox/firefox' #path to firefox.exe
+    driverService = Service('/mnt/c/Users/joaom/Documents/WebDrivers/geckodriver') #path to firefox driver
+    driver = webdriver.Firefox(service=driverService, options=option)
+    driver.get(url)
+    return driver
+
 class SeleniumBot:
     
     def __init__(self,driver):
@@ -28,6 +38,7 @@ class SeleniumBot:
         self.sleep_between_actions()
         
     def wait_for_page(self,xpath,timeout=10,default_sleep=2):
+        # TODO Is it better to check the text of a tag, instead of a tag only?
         """Waits for page to load
 
         Args:
@@ -47,6 +58,9 @@ class SeleniumBot:
                 pass
             except:
                 sleep(default_sleep)
+            finally:
+                fails+=1
+                print(fails)
         if not(success):
             raise TimeoutError()
         
@@ -72,13 +86,13 @@ class SeleniumBot:
         
 class InstaBot(SeleniumBot):
     
-    def __init__(self,driver,uname,passwd):
-        super().__init__(driver)
+    def __init__(self,uname,passwd):
+        super().__init__(get_firefox_driver("https://www.instagram.com"))
         self.uname=uname
         self.passwd=passwd
         self.xpaths = InstaXpaths()
     
-    def log_in(self, driver):
+    def log_in(self):
         """Logs In with a specific account
 
         Args:
@@ -115,9 +129,70 @@ class InstaBot(SeleniumBot):
             return text=='This Account is Private'
         except:
             return False
-            
         
+    def go_to_profile(self,profile_uname):
+        """Searches and goes to a new profile
+
+        Args:
+            profile_uname (str): profile username
+        """
+        self.write_input_human(self.xpaths.search_bar(),profile_uname)
+        self.click_on(self.xpaths.search_first_profile())
+        
+    def get_profile_name(self):
+        return self.get_text_xpath(self.xpaths.profile_name())
     
+    def open_followers(self):
+        self.click_on(self.xpaths.followers())
+        self.wait_for_page(self.xpaths.fol_tag())
+        
+    def open_following(self):
+        self.click_on(self.xpaths.following())
+    
+    def get_fol_simple(self,fol_number=10,following=True):
+        """Gets fol_number fol's (followers or following), depending on the flag following.
+        This function does not know how to scroll down, so maximum is 10
+
+        Args:
+            fol_number (int, optional): Number of Fols. Defaults to 10.
+            following (bool, optional): Following if True, Followers else. Defaults to True.
+
+        Raises:
+            Exception: When fol_number>10
+        """
+        if (fol_number>10):
+            raise Exception('Max fol_number is 10. To get more, use get_fol_complex')
+        fols = fol_number*['']
+        max_range = fol_number+1
+        for i in range(1,max_range):
+            fols[(i-1)] = self.get_text_xpath(self.xpaths.nth_fol(i,following))
+        return fols
+    
+#Bombsite
+    
+tester = InstaBot('jocas.mi','PlsN0H4ck')
+sleep(4)
+tester.log_in()
+sleep(3)
+
+
+tester.go_to_profile('catarinatrmachado')
+sleep(3)
+print(tester.get_profile_name())
+tester.open_following()
+print('ok')
+fBody  = tester.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
+scroll = 0
+while scroll < 20: # scroll 5 times
+    tester.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].offsetHeight;", fBody)
+    sleep(1)
+    print(scroll)
+    scroll += 1
+
+n=1
+while True:
+    print(tester.get_text_xpath(f'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[{n}]/div[2]/div[1]/div/div/span/a/span/div'))
+    n+=1
     
     
     

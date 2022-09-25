@@ -100,8 +100,8 @@ sleep(3)
 tika = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[1]/div[2]/div[1]/div/div/span/a/span/div')
 print(tika.text)
 
-#driver.execute_script("window.scrollTo(0, 100)")
-#driver.execute_script("window.scrollTo(0, 100)")
+driver.execute_script("window.scrollTo(0, 100)")
+driver.execute_script("window.scrollTo(0, 100)")
 
 
 sline = driver.find_element(By.XPATH,'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[8]/div[2]/div[2]/div')  

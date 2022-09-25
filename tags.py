@@ -18,13 +18,25 @@ class InstaXpaths:
             2: 'div[2]/div/div[2]/div[1]/a'
         }
         
+                            
         self.profile_base = '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/main/div/'
         self.profile_xpaths = {
             'Private': 'div/article/div[1]/div/h2',
             'Following Frame': 'header/section/ul/li[3]/a',
             'Following Number': 'header/section/ul/li[3]/a/div/span',
             'Followers Frame': 'header/section/ul/li[2]/a',
-            'Followers Number': 'header/section/ul/li[2]/a/div/span'
+            'Followers Number': 'header/section/ul/li[2]/a/div/span',
+            'UName': 'header/section/div[1]/h2'
+        }
+        self.search_base = '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/nav/div[2]/div/div/div[2]/'
+        self.search_xpaths = {
+            'Bar':'input',
+            'First':'div[3]/div/div[2]/div/div[1]/div/a'
+        }
+        
+        self.fol_base = '/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/'
+        self.fol_xpaths = {
+            'FolTag':'div[1]/div/div[1]/h1/div',
         }
         
     def uname_input(self):
@@ -47,4 +59,25 @@ class InstaXpaths:
     
     def private(self):
         return self.profile_base + self.profile_xpaths['Private']
+    def profile_name(self):
+        return self.profile_base + self.profile_xpaths['UName']
+    def following(self):
+        return self.profile_base + self.profile_xpaths['Following Frame']
+    def followers(self):
+        return self.profile_base + self.profile_xpaths['Followers Frame']
+    def fol_tag(self):
+        return self.fol_base + self.fol_xpaths['FolTag']
+    
+    def search_bar(self):
+        return self.search_base + self.search_xpaths['Bar']
+    def search_first_profile(self):
+        return self.search_base + self.search_xpaths['First']
+    
+    
+    def nth_fol(self,n,following=True):
+        if following:
+            fnum = 3 # following list
+        else:
+            fnum = 2 # followers list
+        return self.fol_base + f'div[{fnum}]/div[1]/div/div[{n}]/div[2]/div[1]/div/div/span/a/span/div'
         
