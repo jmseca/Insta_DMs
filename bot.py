@@ -193,6 +193,35 @@ class InstaBot(SeleniumBot):
         for i in range(fol_number):
             fols[i] = self.get_text_xpath(self.xpaths.nth_fol((i+1),following))
         return fols
+    
+    
+    
+class InstaSpiderBot(InstaBot):
+    
+    def __init__(self,uname,passwd,*follows):
+        super().__init__(uname,passwd)
+        self.follows = follows
+        self.queue_max = 2000
+        self.queue = ['a'*20]*self.queue_max
+        
+    def profile_follow_points(self):
+        if self.is_profile_private():
+            return 0
+        simple_following = self.get_fol_simple()
+        points = 0
+        for fol in self.follows:
+            if fol in simple_following:
+                points += 1
+        return points
+    
+    def following_or_followers(self):
+        """Chooses if we check the followers or following to scrape.
+        
+        Returns: (following, n)
+        Where n is the number of fols to scrape
+        """
+        pass
+        
             
         
         
