@@ -168,6 +168,35 @@ class InstaBot(SeleniumBot):
             fols[(i-1)] = self.get_text_xpath(self.xpaths.nth_fol(i,following))
         return fols
     
+    def scroll_fols(self,n,fol_frame):
+        """Scrolls one of the fols frames 'n' times
+        """
+        i=0
+        while i < n: # scroll 5 times
+            self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].offsetHeight;", fol_frame)
+            sleep(0.05)
+            i += 1
+        self.sleep_between_actions()
+
+        
+    
+    def get_fol_complex(self,fol_number,following=True,scrolls=20):
+        fols = ['a'*20]*fol_number
+        found = False
+        fol_frame = self.driver.find_element(By.XPATH,self.xpaths.fol_frame)
+        while not(found):
+            try:
+                last_fol = self.get_text_xpath(self.xpaths.nth_fol(fol_number,following))
+                found = True
+            except:
+                self.scroll_fols(scrolls,fol_frame)
+        for i in range(fol_number):
+            fols[i] = self.get_text_xpath(self.xpaths.nth_fol((i+1),following))
+        return fols
+            
+        
+        
+    
 #Bombsite
     
 tester = InstaBot('jocas.mi','PlsN0H4ck')
@@ -181,6 +210,11 @@ sleep(3)
 print(tester.get_profile_name())
 tester.open_following()
 print('ok')
+
+tika_fols_300 = tester.get_fol_complex(300)
+print(tika_fols_300)
+
+"""
 fBody  = tester.driver.find_element(By.XPATH,"/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]")
 scroll = 0
 while scroll < 20: # scroll 5 times
@@ -190,9 +224,26 @@ while scroll < 20: # scroll 5 times
     scroll += 1
 
 n=1
+try:
+    while True:
+        print(tester.get_text_xpath(f'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[{n}]/div[2]/div[1]/div/div/span/a/span/div'))
+        n+=1
+except:
+    print(f"Falhou no {n}")
+    
+scroll=0
+while scroll < 5: # scroll 5 times
+    tester.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].offsetHeight;", fBody)
+    sleep(1)
+    print(scroll)
+    scroll += 1
+    
 while True:
     print(tester.get_text_xpath(f'/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/div[1]/div/div[{n}]/div[2]/div[1]/div/div/span/a/span/div'))
     n+=1
+"""
+
+    
     
     
     

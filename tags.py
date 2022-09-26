@@ -18,7 +18,6 @@ class InstaXpaths:
             2: 'div[2]/div/div[2]/div[1]/a'
         }
         
-                            
         self.profile_base = '/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/section/main/div/'
         self.profile_xpaths = {
             'Private': 'div/article/div[1]/div/h2',
@@ -38,6 +37,8 @@ class InstaXpaths:
         self.fol_xpaths = {
             'FolTag':'div[1]/div/div[1]/h1/div',
         }
+        
+        self.fol_frame = "/html/body/div[1]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]"
         
     def uname_input(self):
         return self.login_base + self.login_xpaths['Uname Input']
